@@ -35,10 +35,62 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        //     let data = s.split(",").collect::<Vec<_>>();
+        //
+        //     if data.len() != 2 {
+        //         return Person::default();
+        //     }
+        //
+        //     let mut name = "";
+        //     let mut age = 0_usize;
+        //
+        //     if let Some(n) = data.get(0) {
+        //         if !n.is_empty() {
+        //             name = n;
+        //         }
+        //     }
+        //
+        //     if let Some(a) = data.get(1) {
+        //         if let Ok(o) = a.parse::<usize>() {
+        //             age = o;
+        //         }
+        //     };
+        //
+        //     if age == 0 || name == "" {
+        //         Person::default()
+        //     } else {
+        //         Person {
+        //             name: name.to_string(),
+        //             age,
+        //         }
+        //     }
+
+        // let parts = s.split(',').collect::<Vec<&str>>();
+        // match parts[..] {
+        //     [name, age] if !name.is_empty() => age
+        //         .parse()
+        //         .map(|age| Self {
+        //             name: name.to_string(),
+        //             age,
+        //         })
+        //         .unwrap_or_default(),
+        //     _ => Self::default(),
+        // }
+
+        s.split_once(",")
+            .filter(|(name, _age)| !name.is_empty())
+            .map(|(name, age)| {
+                age.parse()
+                    .map(|age| Person {
+                        name: name.into(),
+                        age,
+                    })
+                    .ok()
+            })
+            .flatten()
+            .unwrap_or_default()
     }
 }
 
